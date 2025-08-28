@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" >
 <head>
@@ -377,8 +378,37 @@
     &copy; 2025 Haneen Aranhikkal. All rights reserved.
   </footer>
 
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
   <script>
-    // Scroll reveal effect
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize EmailJS with your Public Key
+      emailjs.init('vI39c4BKddCaxY9Zy');
+
+      const form = document.getElementById('suggestion-form');
+      const status = document.getElementById('form-status');
+
+      if (form && status) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+          status.textContent = 'Sending...';
+
+          emailjs.sendForm('service_zet0by9', 'template_lz4jkeo', form)
+          .then(() => {
+            status.textContent = 'Suggestion sent successfully! Thank you.';
+            form.reset();
+          }, (error) => {
+            status.textContent = 'Failed to send suggestion. Please try again later.';
+            console.error('EmailJS error:', error);
+          });
+        });
+      } else {
+        console.error('Form or status element not found!');
+      }
+    });
+
+    // Scroll reveal effect (keep your existing code)
     function reveal() {
       document.querySelectorAll('.reveal').forEach(el => {
         const windowHeight = window.innerHeight;
@@ -393,27 +423,9 @@
     }
     window.addEventListener('scroll', reveal);
     window.addEventListener('load', reveal);
-
-    // EmailJS form integration
-    (function(){
-      emailjs.init('vI39c4BKddCaxY9Zy');
-    })();
-
-    document.getElementById('suggestion-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const status = document.getElementById('form-status');
-      status.textContent = 'Sending...';
-
-      emailjs.sendForm('service_zet0by9', 'template_lz4jkeo', this)
-        .then(function() {
-          status.textContent = 'Suggestion sent successfully! Thank you.';
-          document.getElementById('suggestion-form').reset();
-        }, function(error) {
-          status.textContent = 'Failed to send suggestion. Please try again later.';
-          console.error('EmailJS error:', error);
-        });
-    });
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+
+
 </body>
 </html>
